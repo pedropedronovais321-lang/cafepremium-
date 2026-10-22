@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Café Premium | Cruzília</title>
+<meta name="description" content="Café especial, café da manhã e comidas típicas de várias regiões em Cruzília, MG.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;600;700&family=Gloock&family=Hanken+Grotesk:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#102a25; --bg2:#1d4a3f; --teal:#215a55; --green:#2f6a50;
+  --gold:#e9b24f; --cream:#f3eddc; --muted:#b7c4bc; --line:rgba(226,238,230,.4);
+  --serif:Georgia,"Times New Roman",serif; --sans:"Noto Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  color-scheme:dark; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark}}
+:root[data-theme="dark"]{color-scheme:dark}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 64px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--cream);font-family:var(--sans);line-height:1.5;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:rgba(16,42,37,.85);backdrop-filter:blur(10px);z-index:10}
+
+/* fundo fixo: aurora + xícara */
+.stage{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+   radial-gradient(60% 40% at 18% 12%,rgba(45,120,115,.55),transparent 70%),
+   radial-gradient(55% 45% at 85% 92%,rgba(60,125,90,.6),transparent 70%),
+   radial-gradient(40% 30% at 70% 30%,rgba(10,30,25,.7),transparent 70%),
+   linear-gradient(160deg,var(--bg2),var(--bg) 55%,#1a3c32)}
+.cupwrap{position:absolute;left:50%;top:58%;width:min(52vw,340px);transform:translate(-50%,-50%);transition:opacity .9s ease,margin-top .9s ease}
+.js .cupwrap{opacity:0;margin-top:60px}
+.js .cupwrap.show{opacity:1;margin-top:0}
+.cup{display:block;width:100%;overflow:visible;transform-origin:50% 90%;animation:bob 6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-1.2deg)}50%{transform:translateY(-16px) rotate(1.2deg)}}
+.cup .wave{fill:rgba(233,178,79,.3);stroke:none;animation:wave 3.5s linear infinite}
+@keyframes wave{to{transform:translateX(-160px)}}
+.cup *{fill:none;stroke:var(--line);stroke-width:14;stroke-linecap:round;stroke-linejoin:round}
+.cup .glass{fill:rgba(255,255,255,.07)}
+.cup .rim{stroke:none;fill:rgba(255,255,255,.14)}
+.cup .steam{stroke:rgba(243,237,220,.6);stroke-width:13;stroke-dasharray:60 100;transform-box:fill-box;transform-origin:50% 100%;animation:steam 4.5s ease-in-out infinite,sway 2.6s ease-in-out infinite alternate}
+.cup .steam:nth-of-type(2){animation-delay:-1.5s,-.9s}
+.cup .steam:nth-of-type(4){animation-delay:-2.2s,-.4s}
+.cup .steam:nth-of-type(5){animation-delay:-3.8s,-2.1s}
+.cup .steam:nth-of-type(3){animation-delay:-3s,-1.7s}
+@keyframes steam{0%{stroke-dashoffset:60;opacity:0}25%{opacity:.95}100%{stroke-dashoffset:-100;opacity:0}}
+@keyframes sway{from{transform:translateX(-9px) skewX(-5deg)}to{transform:translateX(9px) skewX(5deg)}}
+
+/* navegação */
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:space-between;align-items:center;
+  padding:18px clamp(20px,5vw,56px);background:linear-gradient(rgba(16,42,37,.85),rgba(16,42,37,0));}
+.brand{font-family:var(--serif);font-size:1.2rem;color:var(--cream);text-decoration:none}
+nav{display:flex;gap:clamp(14px,3vw,28px)}
+nav a{color:var(--cream);text-decoration:none;font-size:.95rem;opacity:.9}
+nav a:hover{color:var(--gold)}
+a:focus-visible,.btn:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+main{position:relative;z-index:1}
+section{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:90px 24px 70px;margin-top:-64px}
+h1,h2{font-family:var(--serif);font-weight:400;margin:0;color:var(--cream);text-shadow:0 2px 18px rgba(0,0,0,.35)}
+h2{font-size:clamp(2.4rem,7vw,3.6rem);line-height:1.1}
+p{margin:0}
+.sub{color:var(--muted);max-width:30ch;margin-top:.6rem;font-size:1.05rem;text-shadow:0 1px 10px rgba(0,0,0,.4)}
+
+/* hero */
+#inicio{justify-content:flex-start;gap:clamp(14px,3vh,30px);padding-bottom:6vh;position:relative}
+.logo{width:min(300px,62vw);height:auto;margin-top:3vh;filter:drop-shadow(0 4px 14px rgba(0,0,0,.35))}
+.info{display:flex;flex-direction:column;align-items:center}
+.bite{width:min(320px,72vw);height:auto;overflow:visible;animation:wob 4.5s ease-in-out infinite;filter:drop-shadow(0 14px 16px rgba(0,0,0,.4))}
+@keyframes wob{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+.bite .whole{transform-origin:50% 60%;animation:cycle 9s ease-in-out infinite}
+@keyframes cycle{0%{opacity:0;transform:scale(.88)}5%{opacity:1;transform:scale(1)}92%{opacity:1}95.5%,100%{opacity:0}}
+.bite .b{transform-box:fill-box;transform-origin:center;transform:scale(0)}
+.b1{animation:b1 9s ease-out infinite}.b2{animation:b2 9s ease-out infinite}.b3{animation:b3 9s ease-out infinite}
+@keyframes b1{0%,22%{transform:scale(0)}25%,96%{transform:scale(1)}97%,100%{transform:scale(0)}}
+@keyframes b2{0%,45%{transform:scale(0)}48%,96%{transform:scale(1)}97%,100%{transform:scale(0)}}
+@keyframes b3{0%,68%{transform:scale(0)}71%,96%{transform:scale(1)}97%,100%{transform:scale(0)}}
+.crumb{fill:#d99a38;opacity:0;animation:crumb 9s ease-in infinite}
+@keyframes crumb{0%{opacity:0;transform:translate(0,0)}4%{opacity:1}22%{opacity:0;transform:translate(var(--dx),80px)}100%{opacity:0}}
+.rating{font-weight:700;font-size:1.15rem}
+.rating span{color:var(--gold);font-weight:400;letter-spacing:2px;margin-left:6px}
+.meta{color:var(--muted);margin-top:.15rem}
+.lead{font-size:1.15rem;max-width:26ch;margin-top:.9rem;color:var(--cream);text-shadow:0 1px 12px rgba(0,0,0,.45)}
+.city{color:var(--gold);font-weight:700;font-size:.9rem;margin-top:.6rem}
+.cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:1.1rem}
+.btn{display:inline-block;padding:14px 26px;border-radius:999px;font-weight:700;text-decoration:none;font-size:1rem;border:2px solid transparent;transition:transform .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn.gold{background:var(--gold);color:#2a1d08}
+.btn.ghost{border-color:var(--cream);color:var(--cream)}
+.croissant{position:absolute;width:clamp(48px,7vw,78px);height:auto;filter:drop-shadow(0 8px 10px rgba(0,0,0,.35));will-change:transform;opacity:.9}
+.croissant img{display:block;width:100%;animation:float 6s ease-in-out infinite}
+.croissant:nth-child(even) img{animation-duration:7.5s;animation-direction:reverse}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(4deg)}}
+
+/* seções de foto */
+figure{margin:0 0 1.4rem;width:min(340px,72vw);aspect-ratio:4/5;border:3px solid var(--gold);border-radius:22px;overflow:hidden;
+  box-shadow:0 24px 50px rgba(0,0,0,.45);background:#0b1f1b}
+figure img{width:100%;height:100%;object-fit:cover;display:block}
+.js figure{clip-path:inset(0 0 100% 0 round 22px);transition:clip-path 1s cubic-bezier(.2,.7,.2,1)}
+.js figure img{transform:scale(1.15);transition:transform 1.4s cubic-bezier(.2,.7,.2,1)}
+.js .in figure{clip-path:inset(0 0 0 0 round 22px)}
+.js .in figure img{transform:scale(1)}
+
+/* cardápio */
+.menu{justify-content:flex-start;text-align:left;padding:110px clamp(28px,8vw,72px) 90px}
+.menu-in{width:min(1080px,100%)}
+.menu h2{font-family:"Gloock",var(--serif);color:var(--gold);font-size:clamp(2rem,5vw,3rem);margin:0 0 1.1rem}
+.cat+.cat{margin-top:3.2rem}
+.cols{list-style:none;margin:0;padding:0;column-count:2;column-gap:56px}
+.cols li{break-inside:avoid;padding:13px 0;border-bottom:1px solid rgba(226,238,230,.28);font-family:"Hanken Grotesk",var(--sans);text-shadow:0 1px 8px rgba(0,0,0,.45)}
+.row{display:flex;justify-content:space-between;gap:16px;align-items:baseline}
+.row span{color:var(--cream)}
+.row b{color:#f48a7c;font-weight:600;white-space:nowrap}
+.cols small{display:block;color:var(--muted);font-size:.82rem;margin-top:2px;max-width:42ch}
+@media (max-width:720px){.cols{column-count:1}}
+
+/* visite */
+address{font-style:normal;margin-top:1.2rem}
+.gold-t{font-family:var(--serif);color:var(--gold);font-size:1.15rem;margin-top:.9rem}
+.line{color:var(--muted)}
+#visite .btn{margin-top:1.3rem}
+footer{position:relative;z-index:1;text-align:center;color:var(--muted);font-size:.85rem;padding:0 24px 32px}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .cup,.cup .wave,.bite,.bite .whole,.crumb,.cup .steam,.croissant img{animation:none}
+  .bite .whole{opacity:1}.crumb{display:none}.bite .b1{transform:scale(1)}
+  .cup .steam{opacity:.6;stroke-dashoffset:0}
+  .js figure,.js figure img{transition:none}
+}
+</style>
+<meta name="theme-color" content="#102a25">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Café Premium | Cruzília">
+<meta property="og:description" content="Café especial, café da manhã e comidas típicas de várias regiões em Cruzília, MG.">
+<meta property="og:locale" content="pt_BR">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%98%95%3C/text%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CafeOrCoffeeShop","name":"Café Premium","description":"Café especial, café da manhã e comidas típicas de várias regiões.","telephone":"+55 35 99778-9035","priceRange":"R$ 20–40","address":{"@type":"PostalAddress","streetAddress":"R. Pedro José de Arantes, 22A","addressLocality":"Cruzília","addressRegion":"MG","postalCode":"37445-000","addressCountry":"BR"},"openingHours":"Mo-Sa 08:00-19:00","sameAs":["https://www.instagram.com/cafe_premium_/"]}</script>
+</head>
+<body>
+<div class="stage" aria-hidden="true">
+  <div class="cupwrap"><svg class="cup" viewBox="0 0 520 600">
+    <defs><clipPath id="cupclip"><path d="M100 300H420V340C420 440 350 500 260 500C170 500 100 440 100 340Z"/></clipPath></defs>
+    <path class="steam" pathLength="100" d="M205 200C170 150 235 130 205 75"/>
+    <path class="steam" pathLength="100" d="M320 160C350 120 295 95 335 40"/>
+    <path class="steam" pathLength="100" d="M262 230C250 210 270 195 258 172"/>
+    <path class="steam" pathLength="100" d="M160 215C140 180 185 165 168 120"/>
+    <path class="steam" pathLength="100" d="M360 215C380 185 335 165 355 125"/>
+    <path class="glass" d="M100 300H420V340C420 440 350 500 260 500C170 500 100 440 100 340Z"/>
+    <g clip-path="url(#cupclip)"><path class="wave" d="M-60 352q40-16 80 0t80 0t80 0t80 0t80 0t80 0t80 0t80 0t80 0t80 0V520H-60Z"/></g>
+    <rect class="rim" x="130" y="318" width="260" height="14" rx="7"/>
+    <path d="M420 335H450C505 335 510 425 450 432H400"/>
+    <ellipse cx="260" cy="525" rx="235" ry="28"/>
+  </svg></div>
+</div>
+
+<header>
+  <a class="brand" href="#inicio" data-go="inicio">Café Premium</a>
+  <nav aria-label="Principal">
+    <a href="#fotos" data-go="fotos">Fotos</a>
+    <a href="#cardapio" data-go="cardapio">Cardápio</a>
+    <a href="#visite" data-go="visite">Visite</a>
+  </nav>
+</header>
+
+<main>
+  <section id="inicio">
+    <div class="croissant" style="left:8%;top:30%" data-speed="-.25"><img src="assets/croissant.png" alt=""></div>
+    <div class="croissant" style="right:8%;top:46%" data-speed=".18"><img src="assets/croissant.png" alt=""></div>
+    <div class="croissant" style="left:11%;top:68%" data-speed="-.12"><img src="assets/croissant.png" alt=""></div>
+    <img class="logo" src="assets/logo.svg" alt="Café Premium">
+    <svg class="bite" viewBox="0 0 440 220" aria-label="Croissant sendo mordido" role="img">
+      <defs>
+        <linearGradient id="gc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2c26a"/><stop offset="1" stop-color="#c98a2b"/></linearGradient>
+        <mask id="bites" maskUnits="userSpaceOnUse" x="0" y="0" width="440" height="220">
+          <rect width="440" height="220" fill="#fff"/>
+          <g fill="#000">
+            <circle class="b b1" cx="402" cy="150" r="28"/><circle class="b b1" cx="384" cy="178" r="22"/>
+            <circle class="b b2" cx="352" cy="102" r="32"/><circle class="b b2" cx="342" cy="140" r="26"/><circle class="b b2" cx="366" cy="128" r="22"/>
+            <circle class="b b3" cx="292" cy="62" r="36"/><circle class="b b3" cx="296" cy="106" r="30"/><circle class="b b3" cx="316" cy="84" r="26"/>
+          </g>
+        </mask>
+      </defs>
+      <ellipse cx="220" cy="205" rx="150" ry="10" fill="rgba(0,0,0,.25)"/>
+      <g class="whole"><g mask="url(#bites)" fill="url(#gc)" stroke="#a8681f" stroke-width="3">
+        <ellipse cx="78" cy="160" rx="48" ry="34" transform="rotate(-48 78 160)"/>
+        <ellipse cx="362" cy="160" rx="48" ry="34" transform="rotate(48 362 160)"/>
+        <ellipse cx="140" cy="118" rx="62" ry="50" transform="rotate(-22 140 118)"/>
+        <ellipse cx="300" cy="118" rx="62" ry="50" transform="rotate(22 300 118)"/>
+        <ellipse cx="220" cy="100" rx="78" ry="62"/>
+        <ellipse cx="206" cy="68" rx="42" ry="13" fill="rgba(255,240,200,.4)" stroke="none"/>
+      </g></g>
+      <circle class="crumb" style="--dx:16px;animation-delay:1.98s" cx="398" cy="170" r="4"/>
+      <circle class="crumb" style="--dx:-10px;animation-delay:2.05s" cx="388" cy="185" r="3"/>
+      <circle class="crumb" style="--dx:14px;animation-delay:4.05s" cx="350" cy="130" r="4"/>
+      <circle class="crumb" style="--dx:-12px;animation-delay:4.12s" cx="340" cy="150" r="3"/>
+      <circle class="crumb" style="--dx:12px;animation-delay:6.12s" cx="296" cy="100" r="4"/>
+      <circle class="crumb" style="--dx:-14px;animation-delay:6.2s" cx="286" cy="120" r="3"/>
+    </svg>
+    <div class="info">
+    <h1 class="rating">4,9 <span aria-label="5 estrelas">★★★★★</span></h1>
+    <p class="meta">Cafeteria · R$ 20–40</p>
+    <p class="lead">Café especial, café da manhã e comidas típicas de várias regiões.</p>
+    <p class="city">Cruzília, MG</p>
+    <div class="cta">
+      <a class="btn gold" href="https://wa.me/5535997789035" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn ghost" href="https://www.instagram.com/cafe_premium_/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+  </section>
+
+  <section id="fotos">
+    <figure><img loading="lazy" src="assets/cafe-da-manha.jpg" alt="Sanduíche natural com suco de laranja e pães sobre a mesa"></figure>
+    <h2>Café da manhã</h2>
+    <p class="sub">Sanduíche natural, pão de queijo, tapioca e suco na hora.</p>
+  </section>
+
+  <section id="acai">
+    <figure><img loading="lazy" src="assets/acai.jpg" alt="Tigela de açaí com banana, morango e granola"></figure>
+    <h2>Açaí e frutas</h2>
+    <p class="sub">Açaí, frutas frescas e sucos naturais.</p>
+  </section>
+
+  <section id="waffles">
+    <figure><img loading="lazy" src="assets/waffles.jpg" alt="Waffles com morango e suco de laranja"></figure>
+    <h2>Waffles</h2>
+    <p class="sub">Com mel e frutas ou com Nutella, morango ou banana.</p>
+  </section>
+
+  <section id="tortas">
+    <figure><img loading="lazy" src="assets/tortas.jpg" alt="Torta de chantilly com morangos, já com uma fatia cortada"></figure>
+    <h2>Tortas e bolos</h2>
+    <p class="sub">Fatias, bolo no pote e sobremesas para o café da tarde.</p>
+  </section>
+
+  <section id="cardapio" class="menu">
+    <div class="menu-in">
+      <div class="cat"><h2>Salgados</h2><ul class="cols"><li><div class="row"><span>Croissant</span><b>R$ 10,00</b></div></li><li><div class="row"><span>Pão de queijo 90g</span><b>R$ 2,50</b></div></li><li><div class="row"><span>Pão de queijo c/ frango</span><b>R$ 6,00</b></div></li><li><div class="row"><span>Mini pão de queijo</span><b>R$ 1,00</b></div><small>Unidade</small></li><li><div class="row"><span>Tapioca de frango</span><b>R$ 16,00</b></div></li><li><div class="row"><span>Panini</span><b>R$ 6,00</b></div><small>Frango ou peito de peru</small></li><li><div class="row"><span>Croissant c/ frango e catupiry</span><b>R$ 14,00</b></div></li><li><div class="row"><span>Pão de queijo c/ catupiry</span><b>R$ 6,00</b></div></li><li><div class="row"><span>Pão de queijo c/ frango e catupiry</span><b>R$ 8,00</b></div></li><li><div class="row"><span>Sanduíche natural</span><b>R$ 10,00</b></div><small>Sabores a consultar</small></li><li><div class="row"><span>Tapioca de frango c/ catupiry</span><b>R$ 18,00</b></div></li><li><div class="row"><span>Panini c/ catupiry</span><b>R$ 9,00</b></div><small>Frango ou peito de peru</small></li></ul></div>
+      <div class="cat"><h2>Doces</h2><ul class="cols"><li><div class="row"><span>Croissant c/ Nutella</span><b>R$ 15,00</b></div></li><li><div class="row"><span>Tapioca doce</span><b>R$ 17,00</b></div><small>Banana ou morango com Nutella</small></li><li><div class="row"><span>Waffle c/ Nutella</span><b>R$ 12,00</b></div><small>Morango ou banana</small></li><li><div class="row"><span>Fatia de bolo</span><b>R$ 13,00</b></div></li><li><div class="row"><span>Pudim gourmet</span><b>R$ 16,00</b></div></li><li><div class="row"><span>Pão de queijo 90g c/ Nutella</span><b>R$ 10,00</b></div></li><li><div class="row"><span>Waffle, mel e frutas</span><b>R$ 10,00</b></div><small>Morango ou banana</small></li><li><div class="row"><span>Fatia de torta</span><b>R$ 13,00</b></div></li><li><div class="row"><span>Bolo no pote</span><b>R$ 14,00</b></div></li><li><div class="row"><span>Petit gâteau com sorvete</span><b>R$ 15,00</b></div></li></ul></div>
+      <div class="cat"><h2>Cafés</h2><ul class="cols"><li><div class="row"><span>Café coado</span><b>R$ 5,00</b></div><small>Café especial coado, servido na mesa</small></li><li><div class="row"><span>Espresso duplo</span><b>R$ 9,00</b></div><small>Espresso clássico em dobro</small></li><li><div class="row"><span>Cappuccino italiano</span><b>R$ 10,00</b></div><small>Espresso e leite vaporizado, chocolate ou canela</small></li><li><div class="row"><span>Latte</span><b>R$ 10,00</b></div><small>Espresso e leite em dobro</small></li><li><div class="row"><span>Café com leite</span><b>R$ 7,00</b></div></li><li><div class="row"><span>Café coado V6 Hario</span><b>R$ 15,00</b></div></li><li><div class="row"><span>Espresso</span><b>R$ 6,00</b></div></li><li><div class="row"><span>Macchiato</span><b>R$ 7,00</b></div><small>Espresso com espuma de leite</small></li><li><div class="row"><span>Cappuccino com chantilly</span><b>R$ 11,00</b></div></li><li><div class="row"><span>Flat white</span><b>R$ 10,00</b></div><small>Espresso duplo e leite vaporizado</small></li><li><div class="row"><span>Mocha</span><b>R$ 11,00</b></div><small>Espresso, leite, calda de chocolate ou caramelo</small></li></ul></div>
+      <div class="cat"><h2>Chocolates e gelados</h2><ul class="cols"><li><div class="row"><span>Chocolate</span><b>R$ 8,00</b></div><small>Leite vaporizado, chocolate 50% e Ovomaltine</small></li><li><div class="row"><span>Chocolate gelado</span><b>R$ 8,00</b></div><small>Leite, chocolate 50% e Ovomaltine</small></li><li><div class="row"><span>Affogato</span><b>R$ 10,00</b></div><small>Espresso e sorvete de creme</small></li><li><div class="row"><span>Vitamina de açaí</span><b>R$ 13,00</b></div><small>Açaí, leite, banana e guaraná (330 ml e 550 ml)</small></li><li><div class="row"><span>Chocolate cremoso</span><b>R$ 12,00</b></div><small>Leite vaporizado e chocolate</small></li><li><div class="row"><span>Mocha gelado</span><b>R$ 11,00</b></div><small>Leite cremoso, café, calda de caramelo ou chocolate</small></li><li><div class="row"><span>Soda italiana 355 ml</span><b>R$ 10,00</b></div><small>Framboesa, limão siciliano, tangerina ou maçã verde</small></li></ul></div>
+      <div class="cat"><h2>Sucos e bebidas</h2><ul class="cols"><li><div class="row"><span>Laranja natural</span><b>R$ 12,00</b></div></li><li><div class="row"><span>Laranja com açaí</span><b>R$ 12,00</b></div></li><li><div class="row"><span>Abacaxi com hortelã</span><b>R$ 7,00</b></div></li><li><div class="row"><span>Uva</span><b>R$ 7,00</b></div></li><li><div class="row"><span>Maracujá</span><b>R$ 7,00</b></div></li><li><div class="row"><span>Frutas vermelhas</span><b>R$ 8,00</b></div></li><li><div class="row"><span>Refrigerante 600 ml</span><b>R$ 7,00</b></div></li><li><div class="row"><span>Água com gás</span><b>R$ 3,50</b></div></li><li><div class="row"><span>Laranja com morango</span><b>R$ 12,00</b></div></li><li><div class="row"><span>Abacaxi</span><b>R$ 7,00</b></div></li><li><div class="row"><span>Acerola</span><b>R$ 7,00</b></div></li><li><div class="row"><span>Morango</span><b>R$ 7,00</b></div></li><li><div class="row"><span>Detox</span><b>R$ 8,00</b></div></li><li><div class="row"><span>Refrigerante lata</span><b>R$ 6,00</b></div></li><li><div class="row"><span>Água</span><b>R$ 3,00</b></div></li></ul></div>
+    </div>
+  </section>
+
+  <section id="visite">
+    <h2>Venha nos visitar</h2>
+    <p class="sub" style="max-width:none">Sem reserva: é só chegar e escolher uma mesa.</p>
+    <address>
+      <p class="gold-t">R. Pedro José de Arantes, 22A</p>
+      <p class="line">Cruzília, MG, 37445-000</p>
+      <p class="gold-t">Segunda a sábado, das 8h às 19h</p>
+      <p class="line">WhatsApp (35) 99778-9035</p>
+    </address>
+    <a class="btn gold" href="https://www.google.com/maps/search/?api=1&query=R.+Pedro+Jos%C3%A9+de+Arantes%2C+22A%2C+Cruz%C3%ADlia%2C+MG" target="_blank" rel="noopener">Ver no mapa</a>
+  </section>
+</main>
+<footer>© Café Premium · Cruzília, MG</footer>
+
+<script>
+document.documentElement.classList.add('js');
+var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* rolagem suave nos links do menu */
+document.querySelectorAll('[data-go]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var el=document.getElementById(a.dataset.go);
+    if(el){e.preventDefault();el.scrollIntoView({behavior:reduce?'auto':'smooth'});}
+  });
+});
+
+/* fotos entram ao aparecer na tela */
+var secs=document.querySelectorAll('section');
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.35});
+  secs.forEach(function(s){io.observe(s);});
+}else{secs.forEach(function(s){s.classList.add('in');});}
+
+/* croissants flutuam em profundidades diferentes durante a rolagem */
+if(!reduce){
+  var cs=[].slice.call(document.querySelectorAll('.croissant')),tick=false;
+  function move(){
+    var y=window.scrollY;
+    cs.forEach(function(c){
+      var s=parseFloat(c.dataset.speed);
+      c.style.transform='translateY('+(y*s).toFixed(1)+'px) rotate('+(y*s*.12).toFixed(1)+'deg)';
+    });
+    tick=false;
+  }
+  addEventListener('scroll',function(){if(!tick){tick=true;requestAnimationFrame(move);}},{passive:true});
+}
+var cupw=document.querySelector('.cupwrap');
+function cupShow(){cupw.classList.toggle('show',window.scrollY>innerHeight*.45);}
+addEventListener('scroll',cupShow,{passive:true});cupShow();
+</script>
+</body>
+</html>
